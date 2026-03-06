@@ -21,7 +21,7 @@ pipeline {
         stage('Read Version') {
             steps {
                 script{
-                    def packageJSON = readJSON file: 'catalogue/package.json'
+                    def packageJSON = readJSON file: 'package.json'
                     appVersion = packageJSON.version
                     echo "app version: ${appVersion}"
                 }
@@ -30,18 +30,14 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    dir('catalogue') {
-                        sh 'npm install'
-                    }
+                    sh 'npm install'
                 }
             }
         }
         stage('Unit Test') {
             steps {
                 script {
-                    dir('catalogue') {
-                        sh 'npm test'
-                    }
+                    sh 'npm test'
                 }
             }
         }
@@ -51,9 +47,9 @@ pipeline {
         //         script {
         //             def scannerHome = tool 'sonar-8.0'
         //             withSonarQubeEnv('sonar-server') {
-        //                 dir('catalogue') {
+        //                 
         //                     sh "${scannerHome}/bin/sonar-scanner"
-        //                 }
+        //                 
         //             }
         //         }
         //     }
@@ -124,14 +120,13 @@ pipeline {
             steps {
                 script {
                     withAWS(region:'us-east-1',credentials:'aws-creds') {
-                        dir('catalogue') {
+
                             sh """
                                 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
                                 docker build -t ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion} .
                                 docker images
                                 docker push ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion}
                             """                    
-                        }
                     }
                 }
             }
