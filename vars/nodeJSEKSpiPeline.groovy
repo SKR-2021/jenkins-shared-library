@@ -147,21 +147,21 @@ pipeline {
         //     }
         // }
 
-        } // End of stages
+         // End of stages
 
-        stage('Trigger Dev Deploy') {
-            steps {
-                script {
-                    build job: '../catalogue-deploy',
-                        wait: false, // Wait for completion
-                        propagate: false // Propagate status
-                        parameters: [
-                            string(name: 'appVersion', value: "${appVersion}"),
-                            string(name: 'deploy_to', value: "dev")
-                        ]
+            stage('Trigger Dev Deploy') {
+                steps {
+                    script {
+                        build job: '../catalogue-deploy',
+                            wait: false, // Wait for completion
+                            propagate: false // Propagate status
+                            parameters: [
+                                string(name: 'appVersion', value: "${appVersion}"),
+                                string(name: 'deploy_to', value: "dev")
+                            ]
+                    }   }
                 }
             }
-        }
 
         post {
             always {
