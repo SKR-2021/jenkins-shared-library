@@ -115,7 +115,6 @@ pipeline {
                     }
                 }
     
-        // Corrected: Build Image stage was outside `stages {}` block. Moved inside.
         stage('Build Image') {
             steps {
                 script {
@@ -148,9 +147,22 @@ pipeline {
         //     }
         // }
 
-    } // End of stages
+        } // End of stages
 
-    
+        stage('Trigger Dev Deploy') {
+            steps {
+                script {
+                    build job: '../catalogue-deploy',
+                        wait: false, // Wait for completion
+                        propagate: false // Propagate status
+                        parameters: [
+                            string(name: 'appVersion', value: "${appVersion}"),
+                            string(name: 'deploy_to', value: "dev")
+                        ]
+                }
+            }
+        }
+
         post {
             always {
                 echo 'I will always say Hello again!'
