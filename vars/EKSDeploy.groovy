@@ -19,10 +19,10 @@ def call (Map configMap){
         timeout(time: 60, unit: 'MINUTES') 
         disableConcurrentBuilds()
     }
-    parameters {
-        string(name: 'appVersion', description: 'Which App Version you want to deploy')
-        choice(name: 'deploy_to', choices: ['dev', 'qa', 'prod'], description: 'Pick Something')
-    }
+    // parameters {
+    //     string(name: 'appVersion', description: 'Which App Version you want to deploy')
+    //     choice(name: 'deploy_to', choices: ['dev', 'qa', 'prod'], description: 'Pick Something')
+    // }
     // This is build section
     stages {
 
@@ -32,8 +32,9 @@ def call (Map configMap){
                     withAWS(region:'us-east-1',credentials:'aws-creds') {
 
                         sh """
-                            aws eks update-kubeconfig --region ${REGION} --name ${PROJECT}-${params.deploy_to}
+                            aws eks update-kubeconfig --region ${REGION} --name ${PROJECT}-${deploy_to}
                             kubectl get nodes
+                            echo ${deploy_to}, ${appVersion}
                         """
                     }
                 }
