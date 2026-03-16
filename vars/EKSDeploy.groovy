@@ -19,10 +19,10 @@ def call (Map configMap){
         timeout(time: 60, unit: 'MINUTES') 
         disableConcurrentBuilds()
     }
-    parameters {
-        string(name: 'appVersion', description: 'Which App Version you want to deploy')
-        choice(name: 'deploy_to', choices: ['dev', 'qa', 'prod'], description: 'Pick Something')
-    }
+    // parameters {
+    //     string(name: 'appVersion', description: 'Which App Version you want to deploy')
+    //     choice(name: 'deploy_to', choices: ['dev', 'qa', 'prod'], description: 'Pick Something')
+    // }
     // This is build section
     stages {
 
