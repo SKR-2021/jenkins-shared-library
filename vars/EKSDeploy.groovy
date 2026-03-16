@@ -34,7 +34,7 @@ def call (Map configMap){
                         sh """
                             aws eks update-kubeconfig --region ${REGION} --name ${PROJECT}-${deploy_to}
                             kubectl get nodes
-                            echo ${deploy_to}, ${appVersion}
+                            echo ${env.deploy_to}, ${env.appVersion}
                         """
                     }
                 }
