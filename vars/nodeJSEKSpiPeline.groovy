@@ -63,6 +63,7 @@ pipeline {
         //         }
         //     }
         // }
+        
         stage('Dependabot Security Gate') {
             when {
                 expression { false }
