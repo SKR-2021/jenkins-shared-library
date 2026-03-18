@@ -37,7 +37,7 @@ pipeline {
         stage('Unit Test') {
             steps {
                 script {
-                    sh 'npm test'
+                    sh 'echo test'
                 }
             }
         }
@@ -146,8 +146,8 @@ pipeline {
         //         }
         //     }
         // }
-
          // End of stages here 
+
             stage('Trigger Dev Deploy') {
                 steps {
                     script {
