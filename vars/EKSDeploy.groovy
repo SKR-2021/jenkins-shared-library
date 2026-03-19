@@ -41,9 +41,20 @@ def call (Map configMap){
                     }
                 }
             }
+                stage('Functional Testing'){
+                    when{
+                        expression { deploy_to == "dev" }
+                    }
+                    steps{
+                        script{
+                            sh """
+                                echo "Functional tests in DEV environament"
+                            """
+                    }
+                }
+            }
         }
-        
-        post{
+            post{
             always{
                 echo 'I will always say Hello again!'
                 cleanWs()
