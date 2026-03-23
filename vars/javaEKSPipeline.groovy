@@ -17,6 +17,7 @@ pipeline {
         disableConcurrentBuilds()
     }
     //This is build pipeline
+    // Read maven pom.xml jenkins -gg
     stages {
         stage('Read Version') {
             steps {
