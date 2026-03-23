@@ -42,18 +42,18 @@ def call (Map configMap){
                     }
                 }
             }
-            //     stage('Functional Testing'){
-            //         when{
-            //             expression { deploy_to == "dev" }
-            //         }
-            //         steps{
-            //             script{
-            //                 sh """
-            //                     echo "Functional tests in DEV environament"
-            //                 """
-            //         }
-            //     }
-            // }
+                stage('Functional Testing'){
+                    when{
+                        expression { deploy_to == "dev" }
+                    }
+                    steps{
+                        script{
+                            sh """
+                                echo "Functional tests in DEV environament"
+                            """
+                    }
+                }
+            }
         }
             post{
             always{
