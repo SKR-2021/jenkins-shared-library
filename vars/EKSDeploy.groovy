@@ -75,21 +75,7 @@ def call (Map configMap){
                         """
                 }   }
             }
-
-            failure {
-                script {
-                withCredentials([string(credentialsId: 'slack-token', variable: 'SLACK_WEBHOOK')]) {
-                    sh """
-                    curl -X POST -H 'Content-type: application/json' \
-                    --data '{
-                    "text": "❌ *Build Failed*\\n
-                    *Job:* ${JOB_NAME}\\n
-                    *Build Number:* #${BUILD_NUMBER}\\n
-                    *URL:* ${BUILD_URL}"
-                    }' \$SLACK_WEBHOOK
-                    """
-                }
-        }   }
+            
             failure {
                 echo 'I will run if failure'
             }
