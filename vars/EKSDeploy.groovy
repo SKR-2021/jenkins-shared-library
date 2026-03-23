@@ -55,13 +55,37 @@ def call (Map configMap){
                 }
             }
         }
-            post{
+        post{
             always{
                 echo 'I will always say Hello again!'
                 cleanWs()
             }
             success {
-                echo 'I will run if success'
+                withCredentials([string(credentialsId: 'slack-token', variable: 'SLACK_WEBHOOK')]) {
+                    sh """
+                    curl -X POST -H 'Content-type: application/json' \
+                    --data '{
+                    "text": "✅ *Build Success*\\n
+                    *Job:* ${JOB_NAME}\\n
+                    *Build Number:* #${BUILD_NUMBER}\\n
+                    *Version:* ${IMAGE_VERSION}\\n
+                    *URL:* ${BUILD_URL}"
+                    }' \$SLACK_WEBHOOK
+                    """
+            }
+        }
+            failure {
+                withCredentials([string(credentialsId: 'slack-token', variable: 'SLACK_WEBHOOK')]) {
+                    sh """
+                    curl -X POST -H 'Content-type: application/json' \
+                    --data '{
+                    "text": "❌ *Build Failed*\\n
+                    *Job:* ${JOB_NAME}\\n
+                    *Build Number:* #${BUILD_NUMBER}\\n
+                    *URL:* ${BUILD_URL}"
+                    }' \$SLACK_WEBHOOK
+                    """
+                }
             }
             failure {
                 echo 'I will run if failure'
