@@ -61,20 +61,23 @@ def call (Map configMap){
                 cleanWs()
             }
             success {
-                withCredentials([string(credentialsId: 'slack-token', variable: 'SLACK_WEBHOOK')]) {
-                    sh """
-                    curl -X POST -H 'Content-type: application/json' \
-                    --data '{
-                    "text": "✅ *Build Success*\\n
-                    *Job:* ${JOB_NAME}\\n
-                    *Build Number:* #${BUILD_NUMBER}\\n
-                    *Version:* ${IMAGE_VERSION}\\n
-                    *URL:* ${BUILD_URL}"
-                    }' \$SLACK_WEBHOOK
-                    """
+                script {
+                    withCredentials([string(credentialsId: 'slack-token', variable: 'SLACK_WEBHOOK')]) {
+                        sh """
+                        curl -X POST -H 'Content-type: application/json' \
+                        --data '{
+                        "text": "✅ *Build Success*\\n
+                        *Job:* ${JOB_NAME}\\n
+                        *Build Number:* #${BUILD_NUMBER}\\n
+                        *Version:* ${IMAGE_VERSION}\\n
+                        *URL:* ${BUILD_URL}"
+                        }' \$SLACK_WEBHOOK
+                        """
+                }   }
             }
-        }
+
             failure {
+                script {
                 withCredentials([string(credentialsId: 'slack-token', variable: 'SLACK_WEBHOOK')]) {
                     sh """
                     curl -X POST -H 'Content-type: application/json' \
@@ -86,7 +89,7 @@ def call (Map configMap){
                     }' \$SLACK_WEBHOOK
                     """
                 }
-            }
+        }   }
             failure {
                 echo 'I will run if failure'
             }
